@@ -149,14 +149,14 @@ that can be run using nvidia-docker. Note that performance or functionality may
 vary from the tested SLURM instructions.
 
 Launch configuration and system-specific hyperparameters for the NVIDIA DGX-H100
-single node reference are in the `config_DGXH100_001x08x032.sh` script.
+single node reference are in the `config_config_L40Sx8-1.sh` script.
 
 To launch single node training on NVIDIA DGX-H100 with docker, start
 training with:
 
 ```bash
-source config_DGXH100_001x08x032.sh
-CONT="<DOCKER_REGISTRY>/mlperf-nvidia:single_stage_detector-pytorch" DATADIR="<path/to/dir/containing/openimages/dir>" LOGDIR="<path/to/output/dir>" BACKBONE_DIR="<$(pwd) or path/to/pretrained/ckpt>" ./run_with_docker.sh
+source config_L40Sx8-1.sh
+CONT="node6-1:5000/mlperf-ssd:3.0" DATADIR="/opt/data/bertback/ssd/" LOGDIR="`pwd`/results" BACKBONE_DIR="/opt/data/bertback/ssd/" ./run_with_docker.sh
 
 ```
 
@@ -173,7 +173,7 @@ docker run --rm -it \
 Then launching the training command manually with:
 
 ```bash
-source config_DGXH100_001x08x032.sh
+source config_L40Sx8-1.sh
 torchrun --standalone --nproc_per_node=${DGXNGPU} --no_python ./run_and_time.sh
 ```
 

@@ -1,0 +1,25 @@
+INFO - Running compliance on file: /results/241109110948577055315_1.log
+INFO -  Compliance checks: training_3.1.0/common.yaml
+INFO -  Compliance checks: training_3.1.0/closed_common.yaml
+INFO -  Compliance checks: training_3.1.0/closed_ssd.yaml
+INFO - SUCCESS
+INFO - Running compliance on file: /results/241109110948577055315_2.log
+INFO -  Compliance checks: training_3.1.0/common.yaml
+INFO -  Compliance checks: training_3.1.0/closed_common.yaml
+INFO -  Compliance checks: training_3.1.0/closed_ssd.yaml
+INFO - SUCCESS
+INFO - Running compliance on file: /results/241109110948577055315_3.log
+INFO -  Compliance checks: training_3.1.0/common.yaml
+INFO -  Compliance checks: training_3.1.0/closed_common.yaml
+INFO -  Compliance checks: training_3.1.0/closed_ssd.yaml
+INFO - SUCCESS
+INFO - Running compliance on file: /results/241109110948577055315_4.log
+INFO -  Compliance checks: training_3.1.0/common.yaml
+INFO -  Compliance checks: training_3.1.0/closed_common.yaml
+INFO -  Compliance checks: training_3.1.0/closed_ssd.yaml
+INFO - SUCCESS
+INFO - Running compliance on file: /results/241109110948577055315_5.log
+INFO -  Compliance checks: training_3.1.0/common.yaml
+INFO -  Compliance checks: training_3.1.0/closed_common.yaml
+INFO -  Compliance checks: training_3.1.0/closed_ssd.yaml
+INFO - SUCCESS
