@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ARG FROM_IMAGE_NAME=nvcr.io/nvdlfwea/pytorch:23.09-py3
+ARG FROM_IMAGE_NAME=nvcr.io/nvidia/pytorch:23.09-py3
 
 FROM ${FROM_IMAGE_NAME}
 
@@ -46,5 +46,5 @@ RUN cd /workspace/bert/mhalib && python setup.py build && cp build/lib*/mhalib* 
 
 # Install TE
 RUN MAX_JOBS=1 pip install git+https://github.com/NVIDIA/TransformerEngine.git@b8ba734
-
+RUN pip3 install ptvsd
 WORKDIR /workspace/bert

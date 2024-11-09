@@ -69,7 +69,6 @@ func_update_file_path_for_ci() {
 : "${CONFIG_FILE:="./config_${DGXSYSTEM}.sh"}"
 : "${_logfile_base:="${LOGDIR}/${DATESTAMP}"}"
 : "${DGXNGPU:=1}"
-: "${NV_GPU:="${CUDA_VISIBLE_DEVICES}"}"
 
 readonly docker_image=${CONT:-"nvcr.io/SET_THIS_TO_CORRECT_CONTAINER_TAG"}
 readonly _cont_name=language_model
@@ -92,7 +91,7 @@ cleanup_docker
 trap 'set -eux; cleanup_docker' EXIT
 
 # Setup container
-nvidia-docker run --rm --init --detach --gpus='"'device=${NV_GPU}'"' \
+docker run -d  --gpus=all \
     --net=host --uts=host --ipc=host --security-opt=seccomp=unconfined \
     --ulimit=stack=67108864 --ulimit=memlock=-1 \
     --name="${_cont_name}" ${_cont_mounts[@]} \
@@ -100,6 +99,9 @@ nvidia-docker run --rm --init --detach --gpus='"'device=${NV_GPU}'"' \
 #make sure container has time to finish initialization
 sleep 30
 docker exec -it "${_cont_name}" true
+docker cp ./run_and_time.sh ${_cont_name}:/workspace/bert/run_and_time.sh
+docker cp ./run_pretraining.py ${_cont_name}:/workspace/bert/run_pretraining.py
+
 
 readonly TORCH_RUN="python -m torch.distributed.run --standalone --no_python"
 

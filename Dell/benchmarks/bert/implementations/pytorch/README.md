@@ -1,4 +1,16 @@
-# Download and prepare the data
+- [1. Download and prepare the data](#1-download-and-prepare-the-data)
+  - [1.1. Clean up](#11-clean-up)
+  - [1.2. Packed data](#12-packed-data)
+- [2. Running the model](#2-running-the-model)
+  - [2.1. Alternative launch with nvidia-docker](#21-alternative-launch-with-nvidia-docker)
+  - [2.2. Multinode](#22-multinode)
+  - [2.3. Configuration File Naming Convention](#23-configuration-file-naming-convention)
+    - [2.3.1. Example 1](#231-example-1)
+    - [2.3.2. Example 2](#232-example-2)
+- [3. Description of how the `results_text.tar.gz` file was prepared](#3-description-of-how-the-results_texttargz-file-was-prepared)
+- [4. Acknowledgements](#4-acknowledgements)
+
+# 1. Download and prepare the data
 
 Building the Docker container
 ```shell
@@ -68,16 +80,16 @@ sort 4320_shards_varlength_shuffled-24.chk
 
 
 
-## Clean up
+## 1.1. Clean up
 
 To de-clutter `bert_data/` directory, you can remove _download_, _training_, and _hdf5_4320_shards_uncompressed_ directories, but if disk space is not a concern, it might be good to keep these to debug any data preprocessing issue.
 
 
-## Packed data
+## 1.2. Packed data
 
 To prepare packed data follow the instructions in ./input_preprocessing/packed_data/README.md (this requires a multiprocessor server with large RAM)
 
-# Running the model
+# 2. Running the model
 
 To run this model, use the following command. Replace the configuration script to match the system being used.
 The experiment parameters like learning rate, maximum number of steps etc. are set in the config file named `config_{nodes}x{gpus per node}x{local batch size}x{gradien accumulation}.sh`, while the general system params like number of cores, sockets etc. are set in `config_DGXA100_common.sh`
@@ -87,7 +99,7 @@ source ./config_*.sh
 sbatch -N${DGXNNODES} --ntasks-per-node=${DGXNGPU} --time=${WALLTIME} run.sub
 ```
 
-## Alternative launch with nvidia-docker
+## 2.1. Alternative launch with nvidia-docker
 
 ```bash
 source ./config_DGXA100_1x8x56x1.sh
@@ -96,21 +108,21 @@ CONT=mlperf-nvidia:language_model DATADIR_PHASE2=<path/to/4320_shards_varlength/
 
 You can also specify the data paths directly in `config_DGXA100_common.sh`.
 
-## Multinode
+## 2.2. Multinode
 For multi-node training, we use Slurm for scheduling and Pyxis to run our container.
 
-## Configuration File Naming Convention
+## 2.3. Configuration File Naming Convention
 
 All configuration files follow the format `config_<SYSTEM_NAME>_<NODES>x<GPUS/NODE>x<BATCH/GPU>x<GRADIENT_ACCUMULATION_STEPS>.sh`.
 
-### Example 1
+### 2.3.1. Example 1
 A DGX1 system with 1 node, 8 GPUs per node, batch size of 6 per GPU, and 6 gradient accumulation steps would use `config_DGX1_1x8x6x6.sh`.
 
-### Example 2
+### 2.3.2. Example 2
 A DGX A100 system with 32 nodes, 8 GPUs per node, batch size of 20 per GPU, and no gradient accumulation would use `config_DGXA100_32x8x20x1.sh`
 
 
-# Description of how the `results_text.tar.gz` file was prepared
+# 3. Description of how the `results_text.tar.gz` file was prepared
 
 1. First download the [wikipedia
    dump](https://drive.google.com/file/d/18K1rrNJ_0lSR9bsLaoP3PkQeSFO-9LE7/view?usp=sharing)
@@ -163,6 +175,6 @@ MD5sums:
 | enwiki-20200101-pages-articles-multistream.xml.bz2 | 17,751,214,669 | 00d47075e0f583fb7c0791fac1c57cb3 |
 | enwiki-20200101-pages-articles-multistream.xml     | 75,163,254,305 | 1021bd606cba24ffc4b93239f5a09c02 |
 
-# Acknowledgements
+# 4. Acknowledgements
 
 We'd like to thank members of the ONNX Runtime team at Microsoft for their suggested performance optimization to reduce the size of the last linear layer to only output the fraction of tokens that participate in the MLM loss calculation.
