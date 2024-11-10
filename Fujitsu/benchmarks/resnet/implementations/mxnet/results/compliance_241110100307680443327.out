@@ -1,0 +1,30 @@
+INFO - Running compliance on file: /results/241110100307680443327_1.log
+INFO -  Compliance checks: training_3.1.0/common.yaml
+INFO -  Compliance checks: training_3.1.0/closed_common.yaml
+INFO -  Compliance checks: training_3.1.0/closed_resnet.yaml
+INFO -  Compliance checks: training_3.1.0/closed_resnet_lars.yaml
+INFO - SUCCESS
+INFO - Running compliance on file: /results/241110100307680443327_2.log
+INFO -  Compliance checks: training_3.1.0/common.yaml
+INFO -  Compliance checks: training_3.1.0/closed_common.yaml
+INFO -  Compliance checks: training_3.1.0/closed_resnet.yaml
+INFO -  Compliance checks: training_3.1.0/closed_resnet_lars.yaml
+INFO - SUCCESS
+INFO - Running compliance on file: /results/241110100307680443327_3.log
+INFO -  Compliance checks: training_3.1.0/common.yaml
+INFO -  Compliance checks: training_3.1.0/closed_common.yaml
+INFO -  Compliance checks: training_3.1.0/closed_resnet.yaml
+INFO -  Compliance checks: training_3.1.0/closed_resnet_lars.yaml
+INFO - SUCCESS
+INFO - Running compliance on file: /results/241110100307680443327_4.log
+INFO -  Compliance checks: training_3.1.0/common.yaml
+INFO -  Compliance checks: training_3.1.0/closed_common.yaml
+INFO -  Compliance checks: training_3.1.0/closed_resnet.yaml
+INFO -  Compliance checks: training_3.1.0/closed_resnet_lars.yaml
+INFO - SUCCESS
+INFO - Running compliance on file: /results/241110100307680443327_5.log
+INFO -  Compliance checks: training_3.1.0/common.yaml
+INFO -  Compliance checks: training_3.1.0/closed_common.yaml
+INFO -  Compliance checks: training_3.1.0/closed_resnet.yaml
+INFO -  Compliance checks: training_3.1.0/closed_resnet_lars.yaml
+INFO - SUCCESS
