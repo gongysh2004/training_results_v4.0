@@ -1,0 +1,5 @@
+INFO - Running compliance on file: /results/241110194416284586306_1.log
+INFO -  Compliance checks: training_3.1.0/common.yaml
+INFO -  Compliance checks: training_3.1.0/closed_common.yaml
+INFO -  Compliance checks: training_3.1.0/closed_unet3d.yaml
+INFO - SUCCESS

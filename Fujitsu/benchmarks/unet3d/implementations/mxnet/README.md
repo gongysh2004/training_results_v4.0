@@ -29,7 +29,7 @@ arXiv preprint arXiv:1904.00445 (2019).
     
     ```bash
     docker build -t preprocessing -f Dockerfile_pyt .
-    docker run --ipc=host -it --rm --runtime=nvidia -v DATADIR:/data preprocessing:latest 
+    docker run --ipc=host --network host -it --rm --runtime=nvidia -v /opt/data/bertback/unet3d:/data preprocessing:latest 
     ```
    Where DATADIR is the target directory used to store the dataset after preprocessing.
 
@@ -74,8 +74,8 @@ vary from the tested SLURM instructions.
 
 ```
 docker build --pull -t mlperf-nvidia:image_segmentation-mxnet .
-source config_DGXA100_1x8x7.sh # or any other config
-CONT=mlperf-nvidia:image_segmentation-mxnet DATADIR=<path/to/data/dir> LOGDIR=<path/to/output/dir> ./run_with_docker.sh
+source config_L40Sx8_1x8x4.sh # or any other config
+CONT=mlperf-unet3d:3.0 DATADIR=/opt/data/bertback/unet3d LOGDIR=`pwd` ./run_with_docker.sh
 ```
 
 

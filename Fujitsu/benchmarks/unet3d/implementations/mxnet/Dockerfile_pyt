@@ -18,5 +18,5 @@ FROM ${FROM_IMAGE_NAME}
 ADD . /workspace/unet3d
 WORKDIR /workspace/unet3d
 
-RUN pip install --upgrade pip
-RUN pip install --disable-pip-version-check -r requirements.txt
+RUN pip install --upgrade pip  -i https://mirrors.aliyun.com/pypi/simple/ --trusted-host=mirrors.aliyun.com
+RUN pip install --disable-pip-version-check -r requirements.txt  -i https://mirrors.aliyun.com/pypi/simple/ --trusted-host=mirrors.aliyun.com

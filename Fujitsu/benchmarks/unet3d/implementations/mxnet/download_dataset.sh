@@ -14,9 +14,9 @@
 
 mkdir raw-data-dir
 cd raw-data-dir
-git clone https://github.com/neheller/kits19
+https_proxy=http://127.0.0.1:7890 git clone https://github.com/neheller/kits19
 cd kits19
-pip3 install -r requirements.txt
+pip3 install -r requirements.txt  -i https://mirrors.aliyun.com/pypi/simple/ --trusted-host=mirrors.aliyun.com
 python3 -m starter_code.get_imaging
 
 cd ../..
