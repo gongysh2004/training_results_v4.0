@@ -28,7 +28,7 @@ set -eux
 : "${API_LOG_DIR:=./api_logs}" # apiLog.sh output dir
 : "${API_LOGGING:=0}"
 : "${CLEAR_CACHES:=1}"
-: "${CONT_FILE:=/lustre/fsw/containers/${SLURM_JOBID}_$(basename ${CONT}).squashfs}"
+: "${CONT_FILE:=/opt/data/bertback/enroots/${SLURM_JOBID}_$(basename ${CONT}).squashfs}"
 : "${CONTAINER_PRELOAD_LUSTRE:=0}"
 : "${DATESTAMP:=$(date +'%y%m%d%H%M%S%N')}"
 : "${CHECK_COMPLIANCE:=1}"
@@ -161,7 +161,7 @@ trap cleanup_containers TERM EXIT
 # container preload option
 #########################################################################
 if [[ $CONTAINER_PRELOAD_LUSTRE -gt 0 ]]; then
-    CONT_FILE="/lustre/fsw/containers/${SLURM_JOBID}_$(basename ${CONT}).squashfs"
+    CONT_FILE="/opt/data/bertback/enroots/${SLURM_JOBID}_$(basename ${CONT}).squashfs"
     # Prepull container to LUSTRE
     srun --ntasks=1 enroot import --output ${CONT_FILE} docker://${CONT}
 else
