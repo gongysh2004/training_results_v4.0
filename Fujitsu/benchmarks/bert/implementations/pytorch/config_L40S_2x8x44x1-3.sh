@@ -18,9 +18,9 @@ export EVAL_ITER_START_SAMPLES=150000
 export EVAL_ITER_SAMPLES=150000
 
 ## System run parms
-export DGXNNODES=1
+export DGXNNODES=2
 export DGXSYSTEM=$(basename $(readlink -f ${BASH_SOURCE[0]}) | sed 's/^config_//' | sed 's/\.sh$//' )
-export WALLTIME_MINUTES=8
+export WALLTIME_MINUTES=180
 
 if [[ "${MLPERF_POWER_TRAIN_AFTER_RUN_STOP:-0}" == "1" ]]; then
   export WALLTIME_MINUTES=$((${WALLTIME_MINUTES} + 15))  
@@ -36,9 +36,9 @@ export WALLTIME=$(( ${NEXP:-1} * ${WALLTIME_MINUTES} + 5 ))
 
 ## System config params
 source $(dirname ${BASH_SOURCE[0]})/config_CDI_common.sh
+export DGXNNODES=2
 export DGXNGPU=8
-
+export MLPERF_CLUSTER_NAME=jy-hd01
 export CONTAINER_PRELOAD_LUSTRE=1
 export USE_DDP=1
-
 

@@ -9,7 +9,7 @@ export OPT_LAMB_BETA_1=0.60466
 export OPT_LAMB_BETA_2=0.85437
 export START_WARMUP_STEP=0
 export WARMUP_PROPORTION=0.0
-export WEIGHT_DECAY_RATE=0.1
+export WEIGHT_DECAY_RATE=0.01
 export INIT_LOSS_SCALE=1024.0
 
 export EXTRA_PARAMS="--dense_seq_output --unpad --fused_mha --exchange_padding --fused_bias_fc --fused_bias_mha --fused_dropout_add --fused_gemm_gelu "
@@ -20,7 +20,7 @@ export EVAL_ITER_SAMPLES=150000
 ## System run parms
 export DGXNNODES=1
 export DGXSYSTEM=$(basename $(readlink -f ${BASH_SOURCE[0]}) | sed 's/^config_//' | sed 's/\.sh$//' )
-export WALLTIME_MINUTES=8
+export WALLTIME_MINUTES=180
 
 if [[ "${MLPERF_POWER_TRAIN_AFTER_RUN_STOP:-0}" == "1" ]]; then
   export WALLTIME_MINUTES=$((${WALLTIME_MINUTES} + 15))  
@@ -37,7 +37,7 @@ export WALLTIME=$(( ${NEXP:-1} * ${WALLTIME_MINUTES} + 5 ))
 ## System config params
 source $(dirname ${BASH_SOURCE[0]})/config_CDI_common.sh
 export DGXNGPU=8
-
+export MLPERF_CLUSTER_NAME=jy-hd01
 export CONTAINER_PRELOAD_LUSTRE=1
 export USE_DDP=1
 

@@ -82,7 +82,7 @@ export MLPERF_SLURM_FIRSTNODE="$(scontrol show hostnames "${SLURM_JOB_NODELIST-}
 
 # pyxis sometimes leaves containers lying around which can really confuse things:
 cleanup_pyxis() {
-    srun -N2 --ntasks-per-node=1 /bin/bash -c 'if [[ "$(enroot list)" ]]; then enroot remove -f $(enroot list); fi'
+    srun -N"$(( SLURM_JOB_NUM_NODES ))" --ntasks-per-node=1 /bin/bash -c 'if [[ "$(enroot list)" ]]; then enroot remove -f $(enroot list); fi'
 }
 cleanup_pyxis
 
@@ -147,7 +147,7 @@ readonly LOG_FILE_BASE="${LOGDIR}/${LOG_BASE}"
 #########################################################################
 cleanup_preload_lustre() {
     if [[ "${CONTAINER_PRELOAD_LUSTRE:-0}" != "0" ]]; then
-	srun -N 2 --ntasks-per-node=1  rm -f "${CONT_FILE:?ERROR!CONT_FILE!UNDEFINED}"
+	srun -N"$(( SLURM_JOB_NUM_NODES ))" --ntasks-per-node=1  rm -f "${CONT_FILE:?ERROR!CONT_FILE!UNDEFINED}"
     fi
 }
 
@@ -163,7 +163,7 @@ trap cleanup_containers TERM EXIT
 if [[ $CONTAINER_PRELOAD_LUSTRE -gt 0 ]]; then
     CONT_FILE="/opt/data/bertback/enroots/${SLURM_JOBID}_$(basename ${CONT}).squashfs"
     # Prepull container to LUSTRE
-    srun -N 2 --ntasks-per-node=1  enroot import --output ${CONT_FILE} docker://${CONT}
+    srun -N"$(( SLURM_JOB_NUM_NODES ))" --ntasks-per-node=1  enroot import --output ${CONT_FILE} docker://${CONT}
 else
     CONT_FILE=${CONT}
 fi
@@ -201,19 +201,23 @@ fi
 
 # Setup container
 echo MELLANOX_VISIBLE_DEVICES="${MELLANOX_VISIBLE_DEVICES:-}"
-srun -N2 --ntasks-per-node=1  --container-image="${CONT_FILE}" --container-name="${_cont_name}" true
-srun -N2 --ntasks-per-node=1  --container-name="${_cont_name}" ibv_devinfo --list
-srun -N2 --ntasks-per-node=1  --container-name="${_cont_name}" nvidia-smi topo -m
+srun -N"$(( SLURM_JOB_NUM_NODES ))" --ntasks-per-node=1  --container-image="${CONT_FILE}" --container-name="${_cont_name}" true
+info="echo '------- CPU info by lscpu ----'; lscpu; \
+echo '------- MEM info by lsmem ----';lsmem; \
+echo '------- IB dev info by ibv_evinfo -----';ibv_devinfo --list; \
+echo '------- GPU topo by nvidia-smi topo ------';nvidia-smi topo -m "
+srun -N1 --ntasks-per-node=1  --container-name="${_cont_name}" bash -c  "$info"
+
 #export NCCL_PLUGIN_P2P=ucx
 export NCCL_DEBUG=info
-export NCCL_DEBUG_SUBSYS=NET
+export NCCL_DEBUG_SUBSYS=NET,INIT,GRAPH,ENV
 export NCCL_SOCKET_IFNAME=ens
 export NCCL_IB_HCA=mlx5_0:1,mlx5_2:1
 export UCX_LOG_LEVEL=INFO
 export NV_MLPERF_DEBUG=1
 export UCX_NET_DEVICES=$NCCL_IB_HCA
 #export NCCL_IB_GID_INDEX=6
-srun -N2 --ntasks-per-node=1  --container-name="${_cont_name}" bash -c  "ulimit -a;env"
+srun -N"$(( SLURM_JOB_NUM_NODES ))" --ntasks-per-node=1  --container-name="${_cont_name}" bash -c  "ulimit -a;env"
 # Run NCCL test (700 MB FP16 allreduce)
 #srun --mpi=pmix --ntasks="$(( SLURM_JOB_NUM_NODES * DGXNGPU ))" --ntasks-per-node="${DGXNGPU}" \
 #        --container-image=${CONT_FILE} \
